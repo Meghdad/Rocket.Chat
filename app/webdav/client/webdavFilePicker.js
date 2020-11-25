@@ -355,8 +355,15 @@ Template.webdavFilePicker.onRendered(async function() {
 			return;
 		}
 		const input = this.searchText.get();
-		const regex = new RegExp(`${input}`, 'i');
-		const data = this.state.get('unfilteredWebdavNodes').filter(({ basename }) => input ? basename.match(regex) : true);
+		const regex = new RegExp(`${ input }`, 'i');
+		const data = this.state.get('unfilteredWebdavNodes').filter(({ basename }) => {
+			const isInputEmpty = input.length === 0;
+
+			if (isInputEmpty) {
+				return true;
+			}
+			return basename.match(regex);
+		});
 		this.state.set('webdavNodes', data);
 	});
 });
